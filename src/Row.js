@@ -4,6 +4,7 @@ import './Row.css';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import YouTube from 'react-youtube';
 import movieTrailer from 'movie-trailer';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const imageBaseURL = 'https://image.tmdb.org/t/p/original';
 
@@ -29,8 +30,7 @@ function Row({ title, fetchUrl, isLargeRow, rowID }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios(fetchUrl);
-        console.log(response.data);
+        const response = await axios.get(fetchUrl);
         setMovies(response.data.results);
       } catch (error) {
         console.log(error.response);
@@ -64,7 +64,7 @@ function Row({ title, fetchUrl, isLargeRow, rowID }) {
           {movies.map((movie) => {
             const { poster_path, name, id, backdrop_path } = movie;
             return (
-              <img
+              <LazyLoadImage
                 key={id}
                 src={`${imageBaseURL}${
                   isLargeRow ? poster_path : backdrop_path
@@ -72,6 +72,7 @@ function Row({ title, fetchUrl, isLargeRow, rowID }) {
                 alt={name}
                 className={`row-poster ${isLargeRow && 'row-posterLarge'}`}
                 onClick={() => playTrailer(movie)}
+                delayTime
               />
             );
           })}

@@ -12,7 +12,7 @@ function Banner() {
     const fetchData = async () => {
       try {
         const fetchUrl = requests[0].request;
-        const response = await axios(fetchUrl);
+        const response = await axios.get(fetchUrl);
         const randMovie = Math.floor(
           Math.random() * response.data.results.length
         );
@@ -23,8 +23,6 @@ function Banner() {
     };
     fetchData();
   }, []);
-
-  console.log(movie);
 
   const truncate = (str, n) => {
     return str?.length > n ? str.substr(0, n - 1) + '...' : str;
